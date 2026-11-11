@@ -1,0 +1,5 @@
+permissions:
+  esbuild:
+    build: true
+  dotenv:
+    skills: false
