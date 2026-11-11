@@ -1,0 +1,29 @@
+{
+  "name": "local-maxxing",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Local-first research and project continuity tools for coding agents.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "pnpm run build && node --test dist/tests/task-logic.test.js dist/tests/safe-url.test.js dist/tests/workspace.test.js dist/tests/project-store.test.js dist/tests/server.test.js",
+    "check": "pnpm test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "dotenv": "^17.2.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

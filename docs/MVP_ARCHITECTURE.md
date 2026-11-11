@@ -233,9 +233,7 @@ For local development, OpenCode starts the server as a child process using stdio
         "type": "local",
         "command": ["node", "D:/path/to/local-maxxing/dist/index.js"],
         "environment": {
-          "SEARXNG_URL": "http://127.0.0.1:8080",
-          "CRAWL4AI_URL": "http://127.0.0.1:11235",
-          "CRAWL4AI_API_TOKEN": "{env:CRAWL4AI_API_TOKEN}"
+          "LOCAL_MAXXING_ALLOWED_ROOTS": "D:/samx"
         }
       }
     }
@@ -279,7 +277,7 @@ Tools should return compact, structured responses. Full page contents belong in 
 
 | Area | MVP choice | Reason |
 |---|---|---|
-| Runtime | Node.js + TypeScript | Matches the user's existing development stack and works well for a local MCP process. |
+| Runtime | Node.js + TypeScript; pnpm 12.18.0 for package management | Matches the user's existing development stack and works well for a local MCP process. |
 | MCP | Official MCP TypeScript server SDK | Standard tool interface; keep the core independent from OpenCode. |
 | Validation | Zod schemas | Validate all tool inputs and persisted project state. |
 | Project storage | JSON + Markdown files in \`.local-maxxing/\` | Transparent, Git-versioned and sufficient for the first user/project workflow. |
