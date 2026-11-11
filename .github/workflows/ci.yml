@@ -15,12 +15,26 @@ jobs:
         node-version: [20, 22]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          cache: true
+          run_install: false
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Generate or refresh lockfile
+        run: pnpm install --lockfile-only --no-frozen-lockfile
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: pnpm install --frozen-lockfile
       - name: Build and test
-        run: npm test
+        run: pnpm test
+      - name: Export generated lockfile temporarily
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnpm-lock-node-${{ matrix.node-version }}
+          path: pnpm-lock.yaml
+          if-no-files-found: error
+          retention-days: 1
