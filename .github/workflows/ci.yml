@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  contents: write
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -22,32 +19,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          cache: false
-          run_install: false
+          cache: true
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Generate or refresh lockfile
-        run: pnpm install --lockfile-only --no-frozen-lockfile
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build and test
         run: pnpm test
-      - name: Commit generated lockfile
-        if: github.event_name == 'push' && matrix.node-version == 22
-        run: |
-          git add pnpm-lock.yaml
-          if ! git diff --cached --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: add pnpm lockfile"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
-          fi
-      - name: Export generated lockfile temporarily
-        uses: actions/upload-artifact@v4
-        with:
-          name: pnpm-lock-node-${{ matrix.node-version }}
-          path: pnpm-lock.yaml
-          if-no-files-found: error
-          retention-days: 1
