@@ -5,6 +5,7 @@
   "description": "Local-first research and project continuity tools for coding agents.",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": ">=20.11.0"
   },
@@ -12,8 +13,8 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
     "dev": "tsx src/index.ts",
-    "test": "npm run build && node --test dist/tests/task-logic.test.js dist/tests/safe-url.test.js dist/tests/workspace.test.js dist/tests/project-store.test.js dist/tests/server.test.js",
-    "check": "npm test"
+    "test": "pnpm run build && node --test dist/tests/task-logic.test.js dist/tests/safe-url.test.js dist/tests/workspace.test.js dist/tests/project-store.test.js dist/tests/server.test.js",
+    "check": "pnpm test"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
