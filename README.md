@@ -24,14 +24,14 @@ Local-Maxxing is not a second coding agent. OpenCode owns code editing, terminal
 
 ## Quick start
 
-Requires Node.js 20.11+.
+Requires Node.js 20.11+ and pnpm 12. Install pnpm globally once with `npm install -g pnpm@12.18.0` (the project itself uses pnpm, not npm).
 
 ```powershell
-npm install
+pnpm install
 Copy-Item .env.example .env
 # Set LOCAL_MAXXING_ALLOWED_ROOTS and CRAWL4AI_API_TOKEN in .env
-npm run build
-npm test
+pnpm build
+pnpm test
 ```
 
 ## MCP tools
