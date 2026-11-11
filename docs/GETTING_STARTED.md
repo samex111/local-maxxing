@@ -26,11 +26,11 @@ PowerShell example:
 cd D:\samx
 git clone https://github.com/samex111/local-maxxing.git
 cd local-maxxing
-pnpm install
+pnpm install --frozen-lockfile
 Copy-Item .env.example .env
 # Edit .env with your actual allowed project roots and Crawl4AI token.
 pnpm build
-ppnpm test
+pnpm test
 ```
 
 Set `LOCAL_MAXXING_ALLOWED_ROOTS` to the parent directory containing repositories Local-Maxxing may manage. Separate multiple roots with the OS path separator (semicolon on Windows, colon on macOS/Linux). Never commit `.env`.
