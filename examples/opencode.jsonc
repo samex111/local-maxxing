@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "local-maxxing": {
+        "type": "local",
+        "command": ["node", "D:/samx/local-maxxing/dist/src/index.js"],
+        "environment": {
+          "LOCAL_MAXXING_ALLOWED_ROOTS": "D:/samx"
+        }
+      }
+    }
+  }
+}

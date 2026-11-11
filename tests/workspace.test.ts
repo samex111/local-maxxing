@@ -1,0 +1,3 @@
+import test from "node:test";import assert from "node:assert/strict";import os from "node:os";import path from "node:path";import {mkdtemp,rm,writeFile} from "node:fs/promises";import {resolveProjectRoot} from "../src/core/workspace.js";
+test("rejects missing path",async()=>assert.rejects(()=>resolveProjectRoot(path.join(os.tmpdir(),"lm-does-not-exist")),/does not exist/i));
+test("rejects a file as project root",async()=>{const root=await mkdtemp(path.join(os.tmpdir(),"lm-test-"));try{const file=path.join(root,"x");await writeFile(file,"x");await assert.rejects(()=>resolveProjectRoot(file),/regular directory/i);}finally{await rm(root,{recursive:true,force:true});}});

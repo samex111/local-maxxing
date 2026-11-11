@@ -233,9 +233,7 @@ For local development, OpenCode starts the server as a child process using stdio
         "type": "local",
         "command": ["node", "D:/path/to/local-maxxing/dist/index.js"],
         "environment": {
-          "SEARXNG_URL": "http://127.0.0.1:8080",
-          "CRAWL4AI_URL": "http://127.0.0.1:11235",
-          "CRAWL4AI_API_TOKEN": "{env:CRAWL4AI_API_TOKEN}"
+          "LOCAL_MAXXING_ALLOWED_ROOTS": "D:/samx"
         }
       }
     }
