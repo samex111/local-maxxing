@@ -187,6 +187,68 @@ The initializer should not blindly generate 200 speculative features. It should 
 
 If the feature cannot be completed safely in one session, split it and leave the current branch in a coherent state. Do not claim the entire project is complete because a few features pass.
 
+## 6. Make the workflow automatic in OpenCode
+
+The project protocol must be loaded at the beginning of every coding session. Merely exposing MCP tools is not enough: agents may not call them consistently unless the workflow is part of their project instructions.
+
+### OpenCode integration contract
+
+1. The Local-Maxxing MCP server runs locally over stdio and is registered in OpenCode's `mcp.servers` configuration.
+2. OpenCode's project-level `AGENTS.md` contains a concise, managed **Local-Maxxing session protocol**.
+3. At session start, the agent must read project context, inspect Git status and select/resume exactly one task through Local-Maxxing.
+4. Before ending, the agent must record verification results and a handoff.
+5. MCP server initialization instructions reinforce the protocol, but do not replace the repository's `AGENTS.md`.
+
+The initializer must preserve existing developer instructions. If `AGENTS.md` does not exist, create it with the project guidance and Local-Maxxing protocol. If it exists, append or update only a clearly delimited Local-Maxxing-managed section after showing the proposed change; never replace the user's existing file. If automatic integration is declined, write the proposed snippet to `.local-maxxing/AGENTS_SNIPPET.md` and clearly report that the protocol is not yet automatic.
+
+Example managed section:
+
+```markdown
+## Local-Maxxing session protocol
+
+At the beginning of each session:
+1. Call `local_maxxing_get_project_context`.
+2. Inspect `git status` and the latest relevant commit.
+3. Call `local_maxxing_get_next_task`; resume an existing in-progress task when appropriate.
+4. Work on one focused task only. Read saved research before repeating research.
+
+Before ending:
+1. Run the relevant checks and user-facing verification.
+2. Call `local_maxxing_record_verification`; do not claim a task is verified without evidence.
+3. Update the task state and call `local_maxxing_record_handoff`.
+4. Leave the repository in a coherent state and summarize blockers.
+```
+
+The exact tool names in the final server may differ based on naming conventions; keep this generated instruction synchronized with the actual MCP tool names.
+
+### OpenCode local MCP configuration
+
+For local development, OpenCode starts the server as a child process using stdio. A project configuration can use this shape (replace the executable path with the actual build output):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "local-maxxing": {
+        "type": "local",
+        "command": ["node", "D:/path/to/local-maxxing/dist/index.js"],
+        "environment": {
+          "SEARXNG_URL": "http://127.0.0.1:8080",
+          "CRAWL4AI_URL": "http://127.0.0.1:11235",
+          "CRAWL4AI_API_TOKEN": "{env:CRAWL4AI_API_TOKEN}"
+        }
+      }
+    }
+  }
+}
+```
+
+Keep tokens in the process environment, not in committed configuration. Confirm the server is connected with `opencode mcp list` or `/mcps`. The NIM provider is configured separately in OpenCode; it is not an MCP server and its API key must never be passed to Local-Maxxing unless a later, explicit feature requires it.
+
+### Session protocol reliability
+
+MCP instructions and `AGENTS.md` provide the default behavior, but an LLM can still fail to follow instructions. Therefore v1 should return explicit status and actionable errors from tools (for example, no project initialized, task already in progress, verification missing). Later, if we need hard enforcement, add a thin OpenCode plugin or wrapper that checks session-start/end events; do not build that enforcement mechanism before the basic workflow has been tested.
+
 ## 6. MCP tool surface for v1
 
 Keep the server small. These are the initial tools:
