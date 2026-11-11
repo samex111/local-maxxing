@@ -4,14 +4,21 @@ Run Local-Maxxing as a local MCP server for OpenCode on Windows, macOS or Linux.
 
 ## Requirements
 
-- Node.js 20.11+ and npm.
+- Node.js 20.11+ and pnpm 12.
 - Git and OpenCode.
 - SearXNG (default URL: http://127.0.0.1:8080).
 - Self-hosted Crawl4AI 0.9+ (default URL: http://127.0.0.1:11235).
 
 Local-Maxxing connects to these services; it does not host them.
 
-## 1. Install
+## 1. Install pnpm and Local-Maxxing
+
+On Windows, the pnpm documentation currently recommends installing pnpm using npm because Windows Defender can sometimes block the standalone installer. This is a one-time package-manager bootstrap; project dependencies are installed with pnpm.
+
+```powershell
+npm install -g pnpm@12.18.0
+pnpm --version
+```
 
 PowerShell example:
 
@@ -19,11 +26,11 @@ PowerShell example:
 cd D:\samx
 git clone https://github.com/samex111/local-maxxing.git
 cd local-maxxing
-npm install
+pnpm install
 Copy-Item .env.example .env
 # Edit .env with your actual allowed project roots and Crawl4AI token.
-npm run build
-npm test
+pnpm build
+ppnpm test
 ```
 
 Set `LOCAL_MAXXING_ALLOWED_ROOTS` to the parent directory containing repositories Local-Maxxing may manage. Separate multiple roots with the OS path separator (semicolon on Windows, colon on macOS/Linux). Never commit `.env`.
@@ -92,7 +99,7 @@ The server reads its other service settings and Crawl4AI token from the installa
 opencode mcp list
 ```
 
-The server uses stdio. Do not run `npm run dev` in the same terminal that OpenCode uses for protocol communication.
+The server uses stdio. Do not run `pnpm dev` in the same terminal that OpenCode uses for protocol communication.
 
 ### NVIDIA NIM
 
@@ -139,7 +146,7 @@ Local-Maxxing records evidence; it does not execute tests, edit application sour
 
 ## Troubleshooting
 
-- **MCP does not connect:** rebuild with `npm run build`, check the configured absolute entry-point path and run `opencode mcp list`.
+- **MCP does not connect:** rebuild with `pnpm build`, check the configured absolute entry-point path and run `opencode mcp list`.
 - **Project path rejected:** add its parent directory to `LOCAL_MAXXING_ALLOWED_ROOTS` and restart OpenCode.
 - **SearXNG 403:** enable JSON under `search.formats` and restart SearXNG.
 - **Crawl4AI 401/403:** verify the `.env` bearer token matches the container token.
