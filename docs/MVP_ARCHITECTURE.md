@@ -277,7 +277,7 @@ Tools should return compact, structured responses. Full page contents belong in 
 
 | Area | MVP choice | Reason |
 |---|---|---|
-| Runtime | Node.js + TypeScript | Matches the user's existing development stack and works well for a local MCP process. |
+| Runtime | Node.js + TypeScript; pnpm 12.18.0 for package management | Matches the user's existing development stack and works well for a local MCP process. |
 | MCP | Official MCP TypeScript server SDK | Standard tool interface; keep the core independent from OpenCode. |
 | Validation | Zod schemas | Validate all tool inputs and persisted project state. |
 | Project storage | JSON + Markdown files in \`.local-maxxing/\` | Transparent, Git-versioned and sufficient for the first user/project workflow. |
